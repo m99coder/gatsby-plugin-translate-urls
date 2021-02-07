@@ -38,4 +38,25 @@ describe("translateUrl", () => {
     })
     expect(result).toBe("/dev-404-page/foo-bar")
   })
+
+  // TODO: try to understand what the logic is meant to do
+  test("should return translated URL if locale is present in path and doesn’t equal `defaultLocale`", () => {
+    const result = util.translateUrl({
+      path: "/en/english",
+      locale: "fr",
+      translations: {fr: {english: "français"}},
+      defaultLocale: "en",
+    })
+    expect(result).toBe("/fr/français")
+  })
+
+  test("should return translated URL if locale is present in path and equals `defaultLocale`", () => {
+    const result = util.translateUrl({
+      path: "/en/english",
+      locale: "en",
+      translations: {fr: {english: "français"}},
+      defaultLocale: "en",
+    })
+    expect(result).toBe("/english")
+  })
 })

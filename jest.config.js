@@ -1,5 +1,5 @@
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ["utils/**/*.js", "*.js"],
+  collectCoverageFrom: ["utils/**/*.js", "gatsby-*.js"],
   coverageReporters: ["html"],
 }

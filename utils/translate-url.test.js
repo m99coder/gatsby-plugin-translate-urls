@@ -1,62 +1,67 @@
 const util = require("./translate-url")
 
 describe("translateUrl", () => {
-  test("should return root path if nothing is set", () => {
-    const result = util.translateUrl({})
-    expect(result).toBe("/")
+  const pathLocaleNotEqualLocale = {
+    path: "/en/english",
+    locale: "fr",
+    translations: {en: {english: "english"}, fr: {english: "français"}},
+  }
+  const pathLocaleEqualLocale = {
+    path: "/fr/français",
+    locale: "fr",
+    translations: {en: {english: "english"}, fr: {english: "français"}},
+  }
+  const noPathLocale = {
+    path: "/english",
+    locale: "fr",
+    translations: {en: {english: "english"}, fr: {english: "français"}},
+  }
+
+  test("should process input which is invalid or has to be ignored", () => {
+    expect(util.translateUrl({})).toBe("/")
+    expect(util.translateUrl({locale: "fr"})).toBe("/fr")
+    expect(util.translateUrl({path: "/test"})).toBe("/test")
+    expect(util.translateUrl({path: "/test", locale: "fr"})).toBe("/test")
+    expect(
+      util.translateUrl({
+        path: "/test",
+        locale: "fr",
+        translations: {},
+      })
+    ).toBe("/test")
+    expect(
+      util.translateUrl({
+        path: "/dev-404-page/foo-bar",
+        locale: "fr",
+        translations: {fr: {}},
+      })
+    ).toBe("/dev-404-page/foo-bar")
   })
 
-  test("should return `locale` with no path is set", () => {
-    const result = util.translateUrl({locale: "fr"})
-    expect(result).toBe("/fr")
+  // TODO: Why is this piece of code written like that and what’s the purpose of
+  // it?
+  test("should process input where the path locale is unequal to the provided locale", () => {
+    // pathLocale (en) !== locale (fr): `/en/english` > `/fr`
+    expect(util.translateUrl(pathLocaleNotEqualLocale)).toBe("/fr")
+
+    // pathLocale (en) !== locale (fr)
+    //   && defaultLocale (fr) === locale (fr): `/en/english` > `/`
+    expect(
+      util.translateUrl({...pathLocaleNotEqualLocale, defaultLocale: "fr"})
+    ).toBe("/")
   })
 
-  test("should return `path` if no locale is set", () => {
-    const result = util.translateUrl({path: "/test"})
-    expect(result).toBe("/test")
+  test("should process input where the path locale is equal to the provided locale", () => {
+    expect(util.translateUrl(pathLocaleEqualLocale)).toBe("/fr/français")
+    expect(
+      util.translateUrl({...pathLocaleEqualLocale, defaultLocale: "fr"})
+    ).toBe("/français")
   })
 
-  test("should return `path` if no translations were found", () => {
-    const result = util.translateUrl({path: "/test", locale: "fr"})
-    expect(result).toBe("/test")
-  })
-
-  test("should return `path` if no translations were found for given `locale`", () => {
-    const result = util.translateUrl({
-      path: "/test",
-      locale: "fr",
-      translations: {},
-    })
-    expect(result).toBe("/test")
-  })
-
-  test("should return `path` if it’s the dev 404 page", () => {
-    const result = util.translateUrl({
-      path: "/dev-404-page/foo-bar",
-      locale: "fr",
-      translations: {fr: {}},
-    })
-    expect(result).toBe("/dev-404-page/foo-bar")
-  })
-
-  // TODO: try to understand what the logic is meant to do
-  test("should return translated URL if locale is present in path and doesn’t equal `defaultLocale`", () => {
-    const result = util.translateUrl({
-      path: "/en/english",
-      locale: "fr",
-      translations: {fr: {english: "français"}},
-      defaultLocale: "en",
-    })
-    expect(result).toBe("/fr/français")
-  })
-
-  test("should return translated URL if locale is present in path and equals `defaultLocale`", () => {
-    const result = util.translateUrl({
-      path: "/en/english",
-      locale: "en",
-      translations: {fr: {english: "français"}},
-      defaultLocale: "en",
-    })
-    expect(result).toBe("/english")
+  test("should process input where no path locale is set", () => {
+    expect(util.translateUrl(noPathLocale)).toBe("/fr/français")
+    expect(util.translateUrl({...noPathLocale, defaultLocale: "fr"})).toBe(
+      "/français"
+    )
   })
 })

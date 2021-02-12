@@ -38,11 +38,13 @@ describe("translateUrl", () => {
     ).toBe("/dev-404-page/foo-bar")
   })
 
-  test("should process input where the path locale is unequal to the provided locale", () => {
-    expect(util.translateUrl(pathLocaleNotEqualLocale)).toBe("/fr")
+  test.only("should process input where the path locale is unequal to the provided locale", () => {
+    // /en/english → /fr/français for locale: fr, defaultLocale: null
+    expect(util.translateUrl(pathLocaleNotEqualLocale)).toBe("/fr/français")
+    // /en/english → /fr/français for locale: fr, defaultLocale: fr
     expect(
       util.translateUrl({...pathLocaleNotEqualLocale, defaultLocale: "fr"})
-    ).toBe("/")
+    ).toBe("/français")
   })
 
   test("should process input where the path locale is equal to the provided locale", () => {

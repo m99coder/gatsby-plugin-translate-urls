@@ -24,7 +24,6 @@ const translateUrl = ({
   const isDefaultLocale = defaultLocale && defaultLocale === locale
   const pathLocale = getPathLocale(path)
 
-  // a path locale is set, but unequal to the provided locale
   if (pathLocale && pathLocale !== locale) {
     const newPath = "/" + locale
 
@@ -40,7 +39,6 @@ const translateUrl = ({
     .map((key) => translations[locale][prefix + key] || key)
     .join("/")
 
-  // a path locale is set, but equal to the provided locale
   if (pathLocale) {
     if (isDefaultLocale) {
       translatedPath = removeLocaleFromPath(translatedPath, pathLocale)
@@ -49,7 +47,6 @@ const translateUrl = ({
     return removeTrailingSlash(translatedPath)
   }
 
-  // no path locale is set
   if (isDefaultLocale) {
     return removeTrailingSlash(translatedPath)
   }

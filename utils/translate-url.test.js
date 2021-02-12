@@ -38,14 +38,8 @@ describe("translateUrl", () => {
     ).toBe("/dev-404-page/foo-bar")
   })
 
-  // TODO: Why is this piece of code written like that and what’s the purpose of
-  // it?
   test("should process input where the path locale is unequal to the provided locale", () => {
-    // pathLocale (en) !== locale (fr): `/en/english` > `/fr`
     expect(util.translateUrl(pathLocaleNotEqualLocale)).toBe("/fr")
-
-    // pathLocale (en) !== locale (fr)
-    //   && defaultLocale (fr) === locale (fr): `/en/english` > `/`
     expect(
       util.translateUrl({...pathLocaleNotEqualLocale, defaultLocale: "fr"})
     ).toBe("/")
@@ -63,5 +57,19 @@ describe("translateUrl", () => {
     expect(util.translateUrl({...noPathLocale, defaultLocale: "fr"})).toBe(
       "/français"
     )
+  })
+
+  test("should respect `prefix`", () => {
+    expect(
+      util.translateUrl({
+        path: "/en/english",
+        locale: "fr",
+        translations: {
+          en: {"urls.english": "english"},
+          fr: {"urls.english": "français"},
+        },
+        prefix: "urls",
+      })
+    ).toBe("/fr")
   })
 })

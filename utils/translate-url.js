@@ -24,35 +24,18 @@ const translateUrl = ({
   const isDefaultLocale = defaultLocale && defaultLocale === locale
   const pathLocale = getPathLocale(path)
 
-  if (pathLocale && pathLocale !== locale) {
-    const newPath = "/" + locale
-
-    if (isDefaultLocale) {
-      return removeLocaleFromPath(newPath, defaultLocale)
-    }
-
-    return newPath
-  }
-
   let translatedPath = path
     .split("/")
     .map((key) => translations[locale][prefix + key] || key)
     .join("/")
 
   if (pathLocale) {
-    if (isDefaultLocale) {
-      translatedPath = removeLocaleFromPath(translatedPath, pathLocale)
-    }
-
-    return removeTrailingSlash(translatedPath)
+    const localePrefix = isDefaultLocale ? "" : "/" + locale
+    const newPath =
+      localePrefix + removeLocaleFromPath(translatedPath, pathLocale)
+    return removeTrailingSlash(newPath)
   }
-
-  if (isDefaultLocale) {
-    return removeTrailingSlash(translatedPath)
-  }
-
-  const localizedPath = `/${locale}${translatedPath}`
-  return removeTrailingSlash(localizedPath)
+  return removeTrailingSlash(path)
 }
 
 module.exports = {

@@ -73,7 +73,7 @@ exports.createPages = ({actions: {createRedirect}}, options) => {
     createRedirect({
       fromPath: "/",
       toPath: `/${fallbackLocale}`,
-      language: fallbackLocale,
+      Language: fallbackLocale,
       isPermanent: true,
       exactPath: true,
       force: true,

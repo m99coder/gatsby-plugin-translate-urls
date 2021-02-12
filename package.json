@@ -3,16 +3,10 @@
   "version": "1.0.0-beta.5",
   "description": "Gatsby plugin to translate urls",
   "repository": "https://github.com/cedricdelpoux/gatsby-plugin-translate-urls",
-  "authors": [
-    {
-      "name": "Cédric Delpoux",
-      "email": "cedric.delpoux@gmail.com"
-    },
-    {
-      "name": "Marco Lehmann",
-      "email": "m99coder@gmail.com"
-    }
-  ],
+  "author": {
+    "name": "Cédric Delpoux",
+    "email": "cedric.delpoux@gmail.com"
+  },
   "license": "MIT",
   "private": false,
   "keywords": [

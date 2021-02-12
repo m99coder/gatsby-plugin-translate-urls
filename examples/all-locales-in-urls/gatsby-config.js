@@ -12,6 +12,7 @@ module.exports = {
     },
     "gatsby-transformer-remark",
     "gatsby-plugin-slug",
+    "gatsby-plugin-react-helmet",
     {
       //resolve: "gatsby-plugin-translate-urls"
       resolve: require.resolve(`../..`),

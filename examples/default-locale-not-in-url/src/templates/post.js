@@ -8,7 +8,7 @@ import {graphql} from "gatsby"
 export default ({data: {post}}) => {
   const intl = useContext(TranslateUrlsContext)
   return (
-    <Layout>
+    <Layout title={post.frontmatter.title}>
       <h1>{post.frontmatter.title}</h1>
       <div dangerouslySetInnerHTML={{__html: post.html}} />
       <hr />

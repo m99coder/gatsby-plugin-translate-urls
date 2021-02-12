@@ -1,11 +1,12 @@
-import {FormattedMessage} from "react-intl"
-import {Link, graphql} from "gatsby"
-import React from "react"
-
+import {FormattedMessage, useIntl} from "react-intl"
 import Layout from "../components/layout"
+import React from "react"
+import {Link, graphql} from "gatsby"
+
 export default ({data}) => {
+  const {formatMessage: f} = useIntl()
   return (
-    <Layout>
+    <Layout title={f({id: "pages.posts.title"})}>
       <h1>
         <FormattedMessage id="pages.posts.title" />
       </h1>
